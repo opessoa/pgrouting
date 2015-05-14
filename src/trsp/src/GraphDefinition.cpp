@@ -1,5 +1,11 @@
 #include "GraphDefinition.h"
 
+#undef PGR_LOGGER_ON
+#define PGR_LOGGER_ON
+#include "pgr_logger.h"
+
+#include "pgr_time.h"
+
 // -------------------------------------------------------------------------
 GraphDefinition::GraphDefinition(void)
 {
@@ -743,6 +749,7 @@ bool GraphDefinition::get_single_cost(double total_cost, path_element_t **path, 
 // -------------------------------------------------------------------------
 bool GraphDefinition::construct_graph(edge_t* edges, int edge_count, bool has_reverse_cost, bool directed)
 {
+    double t0 = pgr_gettime();
     int i;
     for(i = 0; i < edge_count; i++)
     {
@@ -759,6 +766,10 @@ bool GraphDefinition::construct_graph(edge_t* edges, int edge_count, bool has_re
         }
         addEdge(edges[i]);
     }
+
+    t0 = pgr_gettime() - t0;
+    PGR_LOGF("TIME to construct the graph for %d edges: %f microseconds\n", edge_count, t0);
+
     m_bIsGraphConstructed = true;
     return true;
 }

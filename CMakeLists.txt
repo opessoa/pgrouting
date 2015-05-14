@@ -189,6 +189,7 @@ endif(SHARE_DIR)
 add_subdirectory(doc)
 
 set(PGROUTING_INCLUDE_DIRECTORIES
+    ${PGROUTING_SOURCE_DIR}/src/common/src
     ${PGROUTING_SOURCE_DIR}/src/astar/src
     ${PGROUTING_SOURCE_DIR}/src/dijkstra/src
     ${PGROUTING_SOURCE_DIR}/src/kdijkstra/src

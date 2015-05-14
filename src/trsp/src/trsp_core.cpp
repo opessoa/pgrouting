@@ -1,6 +1,12 @@
 #include "GraphDefinition.h"
 #include "utils.h"
 
+#undef PGR_LOGGER_ON
+#define PGR_LOGGER_ON
+#include "pgr_logger.h"
+
+#include "pgr_time.h"
+
 
 int trsp_node_wrapper(
     edge_t *edges,
@@ -20,6 +26,7 @@ int trsp_node_wrapper(
 
         std::vector<PDVI> ruleTable;
 
+        double t0 = pgr_gettime();
         int i, j;
         ruleTable.clear();
         for (i=0; i<restrict_count; i++) {
@@ -32,6 +39,9 @@ int trsp_node_wrapper(
             }
             ruleTable.push_back(make_pair(restricts[i].to_cost, seq));
         }
+
+        t0 = pgr_gettime() - t0;
+        PGR_LOGF("TIME to build ruleTable for restrictions: %f\n", t0);
 
         GraphDefinition gdef;
         int res = gdef.my_dijkstra(edges, edge_count, start_vertex, end_vertex, directed, has_reverse_cost, path, path_count, err_msg, ruleTable);
@@ -72,6 +82,7 @@ int trsp_edge_wrapper(
 
         std::vector<PDVI> ruleTable;
 
+        double t0 = pgr_gettime();
         int i, j;
         ruleTable.clear();
         for (i=0; i<restrict_count; i++) {
@@ -84,6 +95,9 @@ int trsp_edge_wrapper(
             }
             ruleTable.push_back(make_pair(restricts[i].to_cost, seq));
         }
+
+        t0 = pgr_gettime() - t0;
+        PGR_LOGF("TIME to build ruleTable for restrictions: %f\n", t0);
 
         GraphDefinition gdef;
         int res = gdef.my_dijkstra(edges, edge_count, start_edge, start_pos, end_edge, end_pos, directed, has_reverse_cost, path, path_count, err_msg, ruleTable);
